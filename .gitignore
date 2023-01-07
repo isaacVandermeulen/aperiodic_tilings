@@ -36,3 +36,10 @@
 *.aux
 *.pdf
 *.log
+
+# build folder
+build/*
+
+# Hidden files other than gitignore
+.*
+!/.gitignore
