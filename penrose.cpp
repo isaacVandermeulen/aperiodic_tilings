@@ -1,4 +1,5 @@
 #include "penrose.hpp"
+#include "heptagonal/tall_triangle.hpp"
 #include "pentagonal/tall_triangle.hpp"
 #include <fstream>
 
@@ -7,78 +8,6 @@ constexpr float phi_inv = phi-1;
 
 constexpr float alpha = 1.8019377358048383;
 constexpr float beta = 1.2469796037174672;
-
-WideHeptagonalTriangle::WideHeptagonalTriangle(const Point& a, const Point& b, const Point& c)
-    : Triangle(a, b, c)
-{}
-
-std::vector<std::unique_ptr<Triangle>> WideHeptagonalTriangle::split(const float scale) const
-{
-    const auto d = m_b*(1.0/(beta*alpha))+m_c*(1.0/alpha);
-    std::vector<std::unique_ptr<Triangle>> result;
-    result.push_back(std::make_unique<TallHeptagonalTriangle>(m_b*scale, d*scale, m_a*scale));
-    result.push_back(std::make_unique<ScaleneHeptagonalTriangle>(m_c*scale, m_a*scale, d*scale));
-    return result;
-}
-
-std::string WideHeptagonalTriangle::label() const
-{
-    return "wideHeptagonal";
-}
-
-MiddleHeptagonalTriangle::MiddleHeptagonalTriangle(const Point& a, const Point& b, const Point& c)
-    : Triangle(a, b, c)
-{}
-
-std::vector<std::unique_ptr<Triangle>> MiddleHeptagonalTriangle::split(const float scale) const
-{
-    const auto d = m_b*(1.0/(beta*alpha))+m_a*(1.0/alpha);
-    std::vector<std::unique_ptr<Triangle>> result;
-    result.push_back(std::make_unique<TallHeptagonalTriangle>(m_c*scale, d*scale, m_a*scale));
-    result.push_back(std::make_unique<ScaleneHeptagonalTriangle>(m_c*scale, m_b*scale, d*scale));
-    return result;
-}
-
-std::string MiddleHeptagonalTriangle::label() const
-{
-    return "middleHeptagonal";
-}
-
-TallHeptagonalTriangle::TallHeptagonalTriangle(const Point& a, const Point& b, const Point& c)
-    : Triangle(a, b, c)
-{}
-
-std::vector<std::unique_ptr<Triangle>> TallHeptagonalTriangle::split(const float scale) const
-{
-    const auto d = m_a*(1/(alpha*beta))+m_b*(1/alpha);
-    std::vector<std::unique_ptr<Triangle>> result;
-    result.push_back(std::make_unique<WideHeptagonalTriangle>(d*scale, m_c*scale, m_a*scale));
-    result.push_back(std::make_unique<MiddleHeptagonalTriangle>(m_b*scale, d*scale, m_c*scale));
-    return result;
-}
-
-std::string TallHeptagonalTriangle::label() const
-{
-    return "tallHeptagonal";
-}
-
-ScaleneHeptagonalTriangle::ScaleneHeptagonalTriangle(const Point& a, const Point& b, const Point& c)
-    : Triangle(a, b, c)
-{}
-
-std::vector<std::unique_ptr<Triangle>> ScaleneHeptagonalTriangle::split(const float scale) const
-{
-    const auto d = m_b*(1/(alpha*beta))+m_a*(1/alpha);
-    std::vector<std::unique_ptr<Triangle>> result;
-    result.push_back(std::make_unique<WideHeptagonalTriangle>(d*scale, m_a*scale, m_c*scale));
-    result.push_back(std::make_unique<MiddleHeptagonalTriangle>(m_c*scale, d*scale, m_b*scale));
-    return result;
-}
-
-std::string ScaleneHeptagonalTriangle::label() const
-{
-    return "scaleneHeptagonal";
-}
 
 PenroseTriangles::PenroseTriangles(std::vector<std::unique_ptr<Triangle>>& initial_triangles)
 {
@@ -128,10 +57,10 @@ int main()
     std::vector<std::unique_ptr<Triangle>> triangles;
     //triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(36*M_PI/180), phi*sin(36*M_PI/180))));
     //triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(-36*M_PI/180), phi*sin(-36*M_PI/180))));
-    triangles.push_back(std::make_unique<TallHeptagonalTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(M_PI/7), alpha*beta*sin(M_PI/7))));
-    triangles.push_back(std::make_unique<TallHeptagonalTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(-M_PI/7), alpha*beta*sin(-M_PI/7))));
+    triangles.push_back(std::make_unique<heptagonal::TallTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(M_PI/7), alpha*beta*sin(M_PI/7))));
+    triangles.push_back(std::make_unique<heptagonal::TallTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(-M_PI/7), alpha*beta*sin(-M_PI/7))));
 
-    const size_t iterations = 61;
+    const size_t iterations = 23;
     const float scale = 1;
     const std::string filename = "./latex/heptagonal_data.tex";
 

@@ -5,7 +5,9 @@ project(aperiodic_tilings)
 
 add_subdirectory(geometry)
 add_subdirectory(pentagonal)
+add_subdirectory(heptagonal)
 
 add_executable(penrose penrose.cpp)
 target_link_libraries(penrose geometry)
 target_link_libraries(penrose pentagonal)
+target_link_libraries(penrose heptagonal)
