@@ -1,20 +1,7 @@
-#include "penrose.hpp"
-#include "heptagonal/tall_triangle.hpp"
-#include "pentagonal/tall_triangle.hpp"
+#include "tiling.hpp"
+
+#include <cmath>
 #include <fstream>
-
-constexpr float phi = 1.618033988749894;
-constexpr float phi_inv = phi-1;
-
-constexpr float alpha = 1.8019377358048383;
-constexpr float beta = 1.2469796037174672;
-
-Tiling::Tiling(std::vector<std::unique_ptr<Triangle>>& initial_triangles)
-{
-    for (auto& triangle : initial_triangles) {
-        m_triangles.push_back(std::move(triangle));
-    }
-}
 
 static std::vector<std::unique_ptr<Triangle>> get_largest_triangles(std::vector<std::unique_ptr<Triangle>>& sorted_triangles)
 {
@@ -69,29 +56,13 @@ void Tiling::split(const size_t iterations, const float scale)
     }
 }
 
-void Tiling::print(const std::string& filename)
+void Tiling::print_latex_file(const std::string& filename) const
 {
     std::ofstream file;
     file.open (filename);
+    print_start_of_latex_file(file); 
     for (const auto& triangle : m_triangles) {
         file << *triangle;
     }
-}
-
-int main()
-{
-    std::vector<std::unique_ptr<Triangle>> triangles;
-    //triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(36*M_PI/180), phi*sin(36*M_PI/180))));
-    //triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(-36*M_PI/180), phi*sin(-36*M_PI/180))));
-    triangles.push_back(std::make_unique<heptagonal::TallTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(M_PI/7), alpha*beta*sin(M_PI/7))));
-    triangles.push_back(std::make_unique<heptagonal::TallTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(-M_PI/7), alpha*beta*sin(-M_PI/7))));
-
-    const size_t iterations = 23;
-    const float scale = 1;
-    const std::string filename = "./latex/heptagonal_data.tex";
-
-    Tiling penrose_triangles(triangles);
-    penrose_triangles.split(iterations, scale);
-    penrose_triangles.print(filename);
-    return 0;
+    print_end_of_latex_file(file); 
 }

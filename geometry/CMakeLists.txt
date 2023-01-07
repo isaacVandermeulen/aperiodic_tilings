@@ -1,4 +1,7 @@
-add_library(geometry triangle.cpp point.cpp)
-message("${CMAKE_CURRENT_SOURCE_DIR} is the current source")
+add_library(geometry
+            point.cpp
+            triangle.cpp
+            tiling.cpp)
  
-target_include_directories( geometry PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories( geometry
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
