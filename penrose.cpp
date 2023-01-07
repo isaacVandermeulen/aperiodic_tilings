@@ -7,52 +7,6 @@ constexpr float phi_inv = phi-1;
 constexpr float alpha = 1.8019377358048383;
 constexpr float beta = 1.2469796037174672;
 
-Point::Point(const float _x, const float _y)
-    : x(_x)
-    , y(_y)
-{}
-
-Point Point::operator*(const float scale) const
-{
-    return Point(scale*x, scale*y);
-}
-
-Point Point::operator+(const Point& that) const
-{
-    return Point(x+that.x, y+that.y);
-}
-
-std::ostream& operator<<(std::ostream& os, const Point& p)
-{
-    os << "(" << p.x << "," << p.y << ")";
-    return os;
-}
-
-std::ostream& Triangle::operator<<(std::ostream& os) const
-{
-    os << "\\draw[" << label() << "]" << m_a << "--" << m_b << "--" << m_c << "--cycle;" << std::endl;
-    //os << "\\draw[" << label() << "]" << m_a << "circle(0.02);" << std::endl;
-    return os;
-}
-
-std::ostream& Triangle::print_seahorse(std::ostream& os) const
-{
-    return os;
-}
-
-Triangle::Triangle(const Point& a, const Point& b, const Point& c)
-    : m_a(a)
-    , m_b(b)
-    , m_c(c)
-{
-    m_area = (m_b.x-m_a.x)*(m_c.y-m_a.y) - (m_c.x-m_a.x)*(m_b.y-m_a.y);
-}
-
-float Triangle::area() const
-{
-    return std::abs(m_area);
-}
-
 WidePentagonalTriangle::WidePentagonalTriangle(const Point& a, const Point& b, const Point& c)
     : Triangle(a, b, c)
 {}
@@ -222,7 +176,7 @@ void PenroseTriangles::print(const std::string& filename)
     std::ofstream file;
     file.open (filename);
     for (const auto& triangle : m_triangles) {
-        triangle->operator<<(file);
+        file << triangle;
     }
 }
 
@@ -236,7 +190,7 @@ int main()
 
     const size_t iterations = 61;
     const float scale = 1;
-    const std::string filename = "./heptagonal_data.tex";
+    const std::string filename = "./latex/heptagonal_data.tex";
 
     PenroseTriangles penrose_triangles(triangles);
     penrose_triangles.split(iterations, scale);

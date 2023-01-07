@@ -3,33 +3,7 @@
 #include <memory>
 #include <vector>
 
-struct Point 
-{
-    const float x;
-    const float y;
-
-    Point(const float _x, const float _y);
-    Point operator*(const float scale) const;
-    Point operator+(const Point& that) const;
-};
-
-class Triangle 
-{
-public:
-    virtual std::vector<std::unique_ptr<Triangle>> split(const float scale = 1) const = 0;
-    float area() const; // unsigned
-    std::ostream& operator<<(std::ostream& os) const;
-    virtual std::ostream& print_seahorse(std::ostream& os) const;
-    virtual ~Triangle() = default;
-protected: 
-    Point m_a; // apex
-    Point m_b;
-    Point m_c;
-    float m_area; // signed
-
-    virtual std::string label() const = 0;
-    Triangle(const Point& a, const Point& b, const Point& c);
-};
+#include "geometry/triangle.hpp"
 
 // Should have internal angles 36, 36, 72 
 class WidePentagonalTriangle : public Triangle
