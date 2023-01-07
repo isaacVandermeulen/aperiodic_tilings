@@ -5,17 +5,6 @@
 
 #include "geometry/triangle.hpp"
 
-// Should have internal angles 36, 36, 72 
-class WidePentagonalTriangle : public Triangle
-{
-public:
-    WidePentagonalTriangle(const Point& a, const Point& b, const Point& c);
-    std::vector<std::unique_ptr<Triangle>> split(const float scale = 1) const override; 
-    std::ostream& print_seahorse(std::ostream& os) const override;
-private:
-    std::string label() const override;
-};
-
 // Should have internal angles 72, 72, 36
 class TallPentagonalTriangle : public Triangle
 {

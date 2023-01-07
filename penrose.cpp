@@ -1,4 +1,5 @@
-#include "./penrose.hpp"
+#include "penrose.hpp"
+#include "pentagonal/tall_triangle.hpp"
 #include <fstream>
 
 constexpr float phi = 1.618033988749894;
@@ -6,64 +7,6 @@ constexpr float phi_inv = phi-1;
 
 constexpr float alpha = 1.8019377358048383;
 constexpr float beta = 1.2469796037174672;
-
-WidePentagonalTriangle::WidePentagonalTriangle(const Point& a, const Point& b, const Point& c)
-    : Triangle(a, b, c)
-{}
-
-std::vector<std::unique_ptr<Triangle>> WidePentagonalTriangle::split(const float scale) const
-{
-    const auto d = m_b*(1-phi_inv)+m_c*phi_inv;
-    std::vector<std::unique_ptr<Triangle>> result;
-    result.push_back(std::make_unique<TallPentagonalTriangle>(m_b*scale, m_a*scale, d*scale));
-    result.push_back(std::make_unique<WidePentagonalTriangle>(d*scale, m_c*scale, m_a*scale));
-    return result;
-}
-
-std::string WidePentagonalTriangle::label() const
-{
-    return "widePentagonal";
-}
-
-std::ostream& WidePentagonalTriangle::print_seahorse(std::ostream& os) const
-{
-    if (m_area > 0) {
-        float r = sqrt(m_b.y*m_b.y + m_b.x*m_b.x);
-        float theta = atan2(m_b.y, m_b.x)*180/M_PI;
-        float alpha = atan2(m_c.y-m_b.y, m_c.x-m_b.x)*180/M_PI;
-        os << "\\smallSeahorse{color\\one}{(" << theta << "+72*\\x:" << r << ")}{" << alpha << "+72*\\x}" << std::endl;
-    }
-    return os;
-}
-
-TallPentagonalTriangle::TallPentagonalTriangle(const Point& a, const Point& b, const Point& c)
-    : Triangle(a, b, c)
-{}
-
-std::vector<std::unique_ptr<Triangle>> TallPentagonalTriangle::split(const float scale) const
-{
-    const auto d = m_a*(1-phi_inv)+m_b*phi_inv;
-    std::vector<std::unique_ptr<Triangle>> result;
-    result.push_back(std::make_unique<WidePentagonalTriangle>(d*scale, m_c*scale, m_a*scale));
-    result.push_back(std::make_unique<TallPentagonalTriangle>(m_c*scale, d*scale, m_b*scale));
-    return result;
-}
-
-std::string TallPentagonalTriangle::label() const
-{
-    return "tallPentagonal";
-}
-
-std::ostream& TallPentagonalTriangle::print_seahorse(std::ostream& os) const
-{
-    if (m_area < 0) {
-        float r = sqrt(m_a.y*m_a.y + m_a.x*m_a.x);
-        float theta = atan2(m_a.y, m_a.x)*180/M_PI;
-        float alpha = atan2(m_c.y-m_a.y, m_c.x-m_a.x)*180/M_PI;
-        os << "\\bigSeahorse{color\\one}{(" << theta << "+72*\\x:" << r << ")}{" << alpha << "+72*\\x}" << std::endl;
-    }
-    return os;
-}
 
 WideHeptagonalTriangle::WideHeptagonalTriangle(const Point& a, const Point& b, const Point& c)
     : Triangle(a, b, c)
@@ -176,15 +119,15 @@ void PenroseTriangles::print(const std::string& filename)
     std::ofstream file;
     file.open (filename);
     for (const auto& triangle : m_triangles) {
-        file << triangle;
+        file << *triangle;
     }
 }
 
 int main()
 {
     std::vector<std::unique_ptr<Triangle>> triangles;
-    //triangles.push_back(std::make_unique<TallPentagonalTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(36*M_PI/180), phi*sin(36*M_PI/180))));
-    //triangles.push_back(std::make_unique<TallPentagonalTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(-36*M_PI/180), phi*sin(-36*M_PI/180))));
+    //triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(36*M_PI/180), phi*sin(36*M_PI/180))));
+    //triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(-36*M_PI/180), phi*sin(-36*M_PI/180))));
     triangles.push_back(std::make_unique<TallHeptagonalTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(M_PI/7), alpha*beta*sin(M_PI/7))));
     triangles.push_back(std::make_unique<TallHeptagonalTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(-M_PI/7), alpha*beta*sin(-M_PI/7))));
 
