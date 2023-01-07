@@ -5,14 +5,16 @@
 
 #include "geometry/triangle.hpp"
 
-class PenroseTriangles
+class Tiling
 {
 public:
-    PenroseTriangles(std::vector<std::unique_ptr<Triangle>>& initial_triangles);
+    Tiling(std::vector<std::unique_ptr<Triangle>>& initial_triangles);
 
     void split(const size_t iterations, const float scale = 1);
     void print(const std::string& filename);
 
 private:
     std::vector<std::unique_ptr<Triangle>> m_triangles;
+
+    void split_once(const float scale);
 };

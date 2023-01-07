@@ -9,41 +9,67 @@ constexpr float phi_inv = phi-1;
 constexpr float alpha = 1.8019377358048383;
 constexpr float beta = 1.2469796037174672;
 
-PenroseTriangles::PenroseTriangles(std::vector<std::unique_ptr<Triangle>>& initial_triangles)
+Tiling::Tiling(std::vector<std::unique_ptr<Triangle>>& initial_triangles)
 {
     for (auto& triangle : initial_triangles) {
         m_triangles.push_back(std::move(triangle));
     }
 }
 
-void PenroseTriangles::split(const size_t iterations, const float scale)
+static std::vector<std::unique_ptr<Triangle>> get_largest_triangles(std::vector<std::unique_ptr<Triangle>>& sorted_triangles)
 {
-    for (size_t i = 0; i != iterations; ++i) {
-        std::vector<std::unique_ptr<Triangle>> subdivided_triangles;
-        const float largest_area = m_triangles.front()->area();
-        const float eps = 1e-6;
-        for (auto& triangle : m_triangles) {
-            if (std::abs(largest_area-triangle->area()) > eps) {
-                break;
-            }
-            auto subdivided = triangle->split(scale);
-            for (auto& subdivided_triangle : subdivided) {
-                subdivided_triangles.push_back(std::move(subdivided_triangle));
-            }
-            triangle = nullptr;
+    std::vector<std::unique_ptr<Triangle>> largest_triangles;
+    const float largest_area = sorted_triangles.front()->area();
+    const float eps = 1e-6;
+    for (auto& triangle : sorted_triangles) {
+        if (std::abs(largest_area-triangle->area()) < eps) {
+            largest_triangles.push_back(std::move(triangle));
+        } else {
+            break;
         }
-        m_triangles.erase(std::remove(m_triangles.begin(), m_triangles.end(), nullptr), m_triangles.end());
-        for (auto& triangle : subdivided_triangles) {
-            m_triangles.push_back(std::move(triangle));
+    }
+    sorted_triangles.erase(std::remove(sorted_triangles.begin(), sorted_triangles.end(), nullptr), sorted_triangles.end());
+    return largest_triangles;
+}
+
+static std::vector<std::unique_ptr<Triangle>> split_triangles(const std::vector<std::unique_ptr<Triangle>>& input_triangles, const float scale = 1)
+{
+    std::vector<std::unique_ptr<Triangle>> result;
+    for (const auto& triangle : input_triangles) {
+        auto subdivided = triangle->split(scale);
+        for (auto& subdivided_triangle : subdivided) {
+            result.push_back(std::move(subdivided_triangle));
         }
-        std::sort(m_triangles.begin(),m_triangles.end(), 
-                [](const std::unique_ptr<Triangle>& triangle_0, 
-                   const std::unique_ptr<Triangle>& triangle_1) {
-                return triangle_0->area() > triangle_1->area();});
+    }
+    return result;
+}
+
+static void sort_by_area(std::vector<std::unique_ptr<Triangle>>& triangles)
+{
+    std::sort(triangles.begin(), triangles.end(),
+            [](const std::unique_ptr<Triangle>& triangle_0,
+               const std::unique_ptr<Triangle>& triangle_1) {
+            return triangle_0->area() > triangle_1->area();});
+}
+
+void Tiling::split_once(const float scale)
+{
+    sort_by_area(m_triangles);
+    const auto largest_triangles = get_largest_triangles(m_triangles);
+    auto subdivided_triangles = split_triangles(largest_triangles, scale);
+    for (auto& triangle : subdivided_triangles) {
+        m_triangles.push_back(std::move(triangle));
     }
 }
 
-void PenroseTriangles::print(const std::string& filename)
+void Tiling::split(const size_t iterations, const float scale)
+{
+    for (size_t i = 0; i != iterations; ++i) {
+        split_once(scale);
+    }
+}
+
+void Tiling::print(const std::string& filename)
 {
     std::ofstream file;
     file.open (filename);
@@ -64,7 +90,7 @@ int main()
     const float scale = 1;
     const std::string filename = "./latex/heptagonal_data.tex";
 
-    PenroseTriangles penrose_triangles(triangles);
+    Tiling penrose_triangles(triangles);
     penrose_triangles.split(iterations, scale);
     penrose_triangles.print(filename);
     return 0;
