@@ -13,7 +13,7 @@ TallTriangle::TallTriangle(const Point& a, const Point& b, const Point& c)
 
 static std::vector<std::unique_ptr<Triangle>> split_1(const Point& a, const Point& b, const Point& c)
 {
-    const auto d = a*(1/(alpha*beta))+c*(1/alpha);
+    const auto d = a*(chi*psi)+c*(chi); // closer to c
     std::vector<std::unique_ptr<Triangle>> result;
     result.push_back(std::make_unique<WideTriangle>(d, b, a));
     result.push_back(std::make_unique<MiddleTriangle>(c, d, b));
@@ -22,7 +22,7 @@ static std::vector<std::unique_ptr<Triangle>> split_1(const Point& a, const Poin
 
 static std::vector<std::unique_ptr<Triangle>> split_2(const Point& a, const Point& b, const Point& c)
 {
-    const auto d = a*(1/(alpha*alpha*beta*beta))+c*(1/beta);
+    const auto d = a*(chi*chi*psi*psi)+c*(psi); // closer to c
     std::vector<std::unique_ptr<Triangle>> result;
     result.push_back(std::make_unique<ScaleneTriangle>(a, b, d));
     result.push_back(std::make_unique<TallTriangle>(b, d, c));

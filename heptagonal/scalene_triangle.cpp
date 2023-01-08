@@ -13,7 +13,7 @@ ScaleneTriangle::ScaleneTriangle(const Point& a, const Point& b, const Point& c)
 
 static std::vector<std::unique_ptr<Triangle>> split_1(const Point& a, const Point& b, const Point& c)
 {
-    const auto d = b*(1/(alpha*beta))+a*(1/alpha);
+    const auto d = b*(chi*psi)+a*(chi); // closer to a
     std::vector<std::unique_ptr<Triangle>> result;
     result.push_back(std::make_unique<WideTriangle>(d, a, c));
     result.push_back(std::make_unique<MiddleTriangle>(c, d, b));
@@ -22,7 +22,7 @@ static std::vector<std::unique_ptr<Triangle>> split_1(const Point& a, const Poin
 
 static std::vector<std::unique_ptr<Triangle>> split_2(const Point& a, const Point& b, const Point& c)
 {
-    const auto d = a*(1/(alpha*alpha*beta*beta))+b*(1/beta);
+    const auto d = a*(chi*chi*psi*psi)+b*(psi); //closer to b
     std::vector<std::unique_ptr<Triangle>> result;
     result.push_back(std::make_unique<ScaleneTriangle>(c, b, d));
     result.push_back(std::make_unique<TallTriangle>(a, d, c));
@@ -31,7 +31,7 @@ static std::vector<std::unique_ptr<Triangle>> split_2(const Point& a, const Poin
 
 static std::vector<std::unique_ptr<Triangle>> split_3(const Point& a, const Point& b, const Point& c)
 {
-    const auto d = a*(1/(alpha*beta*beta))+b*(1/(beta*beta));
+    const auto d = a*(chi*psi*psi)+b*(psi*psi); // closer to b
     std::vector<std::unique_ptr<Triangle>> result;
     result.push_back(std::make_unique<ScaleneTriangle>(a, c, d));
     result.push_back(std::make_unique<MiddleTriangle>(d, b, c));
@@ -40,7 +40,7 @@ static std::vector<std::unique_ptr<Triangle>> split_3(const Point& a, const Poin
 
 static std::vector<std::unique_ptr<Triangle>> split_4(const Point& a, const Point& b, const Point& c)
 {
-    const auto d = a*(1/(alpha*alpha))+c*(beta/alpha);
+    const auto d = a*(chi*chi)+c*(chi/psi); // closer to c
     std::vector<std::unique_ptr<Triangle>> result;
     result.push_back(std::make_unique<ScaleneTriangle>(b, d, c));
     result.push_back(std::make_unique<WideTriangle>(d, a, b));
