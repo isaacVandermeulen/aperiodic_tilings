@@ -49,10 +49,10 @@ static std::vector<std::unique_ptr<Triangle>> split_4(const Point& a, const Poin
 
 std::vector<std::unique_ptr<Triangle>> ScaleneTriangle::split(const float scale) const
 {
-    //return split_1(m_a, m_b, m_c);
+    return split_1(m_a, m_b, m_c);
     //return split_2(m_a, m_b, m_c);
     //return split_3(m_a, m_b, m_c);
-    return split_4(m_a, m_b, m_c);
+    //return split_4(m_a, m_b, m_c);
 }
 
 std::string ScaleneTriangle::label() const
