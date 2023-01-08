@@ -13,8 +13,8 @@ protected:
 
     Tiling() = default;
 
-    virtual void print_start_of_latex_file(std::ostream& os) const = 0;
-    virtual void print_end_of_latex_file(std::ostream& os) const = 0;
+    virtual void print_tikz_styles(std::ostream& os) const = 0;
+    virtual size_t symmetry_number() const = 0;
 private:
     void split_once(const float scale);
 };

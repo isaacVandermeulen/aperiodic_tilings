@@ -14,27 +14,15 @@ PentagonalTiling::PentagonalTiling()
     m_triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(-36*M_PI/180), phi*sin(-36*M_PI/180))));
 }
 
-void PentagonalTiling::print_start_of_latex_file(std::ostream& os) const
+void PentagonalTiling::print_tikz_styles(std::ostream& os) const
 {
-    os << "\\documentclass[border=0.1cm]{standalone}" << std::endl;
-    os << "    \\usepackage{tikz}" << std::endl;
-    os << "    \\tikzset{widePentagonal/.style={ultra thin, line join=round,fill=violet!80!black}}" << std::endl;
-    os << "    \\tikzset{tallPentagonal/.style={ultra thin, line join=round,fill=violet!60!white}}" << std::endl;
-    os << "\\begin{document}" << std::endl;
-    os << std::endl;
-    os << "\\begin{tikzpicture}" << std::endl;
-    os << "\\foreach" << std::endl;
-    os << "\\x in {0,1,2,3,4}{" << std::endl;
-    os << "\\begin{scope}[rotate around={72*\\x:((0,0))}]" << std::endl;
+    os << "    \\tikzset{widePentagonal/.style={triangle=violet!80!black}}" << std::endl;
+    os << "    \\tikzset{tallPentagonal/.style={triangle=violet!60!white}}" << std::endl;
 }
 
-void PentagonalTiling::print_end_of_latex_file(std::ostream& os) const
+size_t PentagonalTiling::symmetry_number() const
 {
-    os << "\\end{scope}" << std::endl;
-    os << "}" << std::endl;
-    os << std::endl;
-    os << "\\end{tikzpicture}" << std::endl;
-    os << "\\end{document}" << std::endl;
+    return 5;
 }
 
 } // end pentagonal namespace

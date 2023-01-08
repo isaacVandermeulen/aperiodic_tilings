@@ -60,9 +60,22 @@ void Tiling::print_latex_file(const std::string& filename) const
 {
     std::ofstream file;
     file.open (filename);
-    print_start_of_latex_file(file); 
+    file << "\\documentclass[border=0.1cm]{standalone}" << std::endl;
+    file << "    \\usepackage{tikz}" << std::endl;
+    file << "    \\tikzset{triangle/.style={ultra thin, line join=round, fill=#1}}" << std::endl;
+    print_tikz_styles(file);
+    file << "\\begin{document}" << std::endl;
+    file << std::endl;
+    file << "\\begin{tikzpicture}" << std::endl;
+    file << "\\foreach" << std::endl;
+    file << "\\x in {0,1,...," << symmetry_number()-1 << "}{" << std::endl;
+    file << "\\begin{scope}[rotate around={" << 360.0/symmetry_number() << "*\\x:((0,0))}]" << std::endl;
     for (const auto& triangle : m_triangles) {
         file << *triangle;
     }
-    print_end_of_latex_file(file); 
+    file << "\\end{scope}" << std::endl;
+    file << "}" << std::endl;
+    file << std::endl;
+    file << "\\end{tikzpicture}" << std::endl;
+    file << "\\end{document}" << std::endl;
 }

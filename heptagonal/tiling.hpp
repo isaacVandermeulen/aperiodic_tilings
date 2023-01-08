@@ -10,8 +10,8 @@ public:
     HeptagonalTiling();
 
 protected:
-    void print_start_of_latex_file(std::ostream& os) const override;
-    void print_end_of_latex_file(std::ostream& os) const override;
+    void print_tikz_styles(std::ostream& os) const override;
+    size_t symmetry_number() const override;
 };
 
 } // end heptagonal tiling
