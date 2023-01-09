@@ -19,7 +19,8 @@ void HeptagonalTiling::print_tikz_styles(std::ostream& os) const
     os << "    \\tikzset{wideHeptagonal/.style={triangle=orange!80!black}}" << std::endl;
     os << "    \\tikzset{middleHeptagonal/.style={triangle=orange}}" << std::endl;
     os << "    \\tikzset{tallHeptagonal/.style={triangle=orange!60!white}}" << std::endl;
-    os << "    \\tikzset{scaleneHeptagonal/.style={triangle=orange!80!white}}" << std::endl;
+    //os << "    \\tikzset{scaleneHeptagonal/.style={triangle=orange!80!white}}" << std::endl;
+    os << "    \\tikzset{scaleneHeptagonal/.style={triangle=orange!30!white}}" << std::endl;
 }
 
 size_t HeptagonalTiling::symmetry_number() const

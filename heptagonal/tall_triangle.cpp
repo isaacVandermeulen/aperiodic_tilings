@@ -29,12 +29,27 @@ static std::vector<std::unique_ptr<Triangle>> split_2(const Point& a, const Poin
     return result;
 }
 
+static std::vector<std::unique_ptr<Triangle>> split_multi(const Point& a, const Point& b, const Point& c)
+{
+    const auto d = a*(chi*chi*psi*psi)+c*(psi); // closer to c
+    const auto e = a*(chi*psi*psi)+b*(psi*psi); // closer to b
+    const auto f = a*(chi)+d*(chi*psi); // closer to a
+    std::vector<std::unique_ptr<Triangle>> result;
+    result.push_back(std::make_unique<TallTriangle>(b, c, d));
+    result.push_back(std::make_unique<MiddleTriangle>(e, d, b));
+    result.push_back(std::make_unique<MiddleTriangle>(e, d, f));
+    result.push_back(std::make_unique<WideTriangle>(f, e, a));
+    //result.push_back(std::make_unique<ScaleneTriangle>(b, c, d));
+    return result;
+}
+
 std::vector<std::unique_ptr<Triangle>> TallTriangle::split(const float scale) const
 {
-    return split_1(m_a, m_b, m_c);
+    //return split_1(m_a, m_b, m_c);
     //return split_1(m_a, m_c, m_b);
     //return split_2(m_a, m_b, m_c);
     //return split_2(m_a, m_c, m_b);
+    return split_multi(m_a, m_c, m_b);
 }
 
 std::string TallTriangle::label() const

@@ -28,12 +28,28 @@ static std::vector<std::unique_ptr<Triangle>> split_2(const Point& a, const Poin
     return result;
 }
 
+static std::vector<std::unique_ptr<Triangle>> split_multi(const Point& a, const Point& b, const Point& c)
+{
+    const auto d = c*(chi*psi*psi)+b*(psi*psi); // closer to b
+    const auto e = b*(chi*psi*psi)+c*(psi*psi); // closer to c
+    const auto f = a*(chi*chi*psi*psi)+b*(psi); // closer to b
+    const auto g = a*(chi*chi*psi*psi)+c*(psi); // closer to c
+    std::vector<std::unique_ptr<Triangle>> result;
+    result.push_back(std::make_unique<TallTriangle>(a, f, d));
+    result.push_back(std::make_unique<TallTriangle>(a, e, d));
+    result.push_back(std::make_unique<TallTriangle>(a, e, g));
+    result.push_back(std::make_unique<ScaleneTriangle>(d, b, f));
+    result.push_back(std::make_unique<ScaleneTriangle>(e, c, g));
+    return result;
+}
+
 std::vector<std::unique_ptr<Triangle>> MiddleTriangle::split(const float scale) const
 {
-    return split_1(m_a, m_b, m_c);
+    //return split_1(m_a, m_b, m_c);
     //return split_1(m_a, m_c, m_b);
     //return split_2(m_a, m_b, m_c);
     //return split_2(m_a, m_c, m_b);
+    return split_multi(m_a, m_c, m_b);
 }
 
 std::string MiddleTriangle::label() const
