@@ -30,4 +30,15 @@ std::string ReverseTriangle::label() const
     return "reverseHeptagonal";
 }
 
+std::ostream& ReverseTriangle::oriented_path(std::ostream& os) const
+{
+    Point p_a = m_a*0.5+m_b*0.25+m_c*0.25;
+    Point p_b = m_a*0.25+m_b*0.5+m_c*0.25;
+    Point p_c = m_a*0.25+m_b*0.25+m_c*0.5;
+    os << "\\draw[->]" << p_a << "--" << p_c << "--" << p_b << ";" << std::endl;
+    return os;
+}
+
+
+
 } // end heptagonal namespace

@@ -12,6 +12,7 @@ public:
     float area() const; // unsigned
     std::ostream& operator<<(std::ostream& os) const;
     virtual std::ostream& print_seahorse(std::ostream& os) const;
+    virtual std::ostream& oriented_path(std::ostream& os) const;
     virtual ~Triangle() = default;
 protected: 
     Point m_a; // apex
