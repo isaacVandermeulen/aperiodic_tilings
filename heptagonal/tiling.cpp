@@ -10,8 +10,9 @@ namespace heptagonal {
 
 HeptagonalTiling::HeptagonalTiling()
 {
-    m_triangles.push_back(std::make_unique<heptagonal::TallTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(M_PI/7), alpha*beta*sin(M_PI/7))));
-    m_triangles.push_back(std::make_unique<heptagonal::TallTriangle>(Point(0,0), Point(alpha*beta,0), Point(alpha*beta*cos(-M_PI/7), alpha*beta*sin(-M_PI/7))));
+    const float scale = 10;
+    m_triangles.push_back(std::make_unique<heptagonal::TallTriangle>(Point(0,0), Point(scale*alpha*beta,0), Point(scale*alpha*beta*cos(M_PI/7), scale*alpha*beta*sin(M_PI/7))));
+    m_triangles.push_back(std::make_unique<heptagonal::TallTriangle>(Point(0,0), Point(scale*alpha*beta,0), Point(scale*alpha*beta*cos(-M_PI/7), scale*alpha*beta*sin(-M_PI/7))));
 }
 
 void HeptagonalTiling::print_tikz_styles(std::ostream& os) const

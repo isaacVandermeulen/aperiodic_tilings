@@ -7,7 +7,7 @@ static std::vector<std::unique_ptr<Triangle>> get_largest_triangles(std::vector<
 {
     std::vector<std::unique_ptr<Triangle>> largest_triangles;
     const float largest_area = sorted_triangles.front()->area();
-    const float eps = 1e-6;
+    const float eps = 1e-4*largest_area;
     for (auto& triangle : sorted_triangles) {
         if (std::abs(largest_area-triangle->area()) < eps) {
             largest_triangles.push_back(std::move(triangle));
