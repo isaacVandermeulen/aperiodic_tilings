@@ -1,4 +1,4 @@
-#include "scalene_triangle.hpp"
+#include "reverse_triangle.hpp"
 
 #include "constants.hpp"
 #include "middle_triangle.hpp"
@@ -7,7 +7,7 @@
 
 namespace heptagonal {
 
-ScaleneTriangle::ScaleneTriangle(const Point& a, const Point& b, const Point& c)
+ReverseTriangle::ReverseTriangle(const Point& a, const Point& b, const Point& c)
     : Triangle(a, b, c)
 {}
 
@@ -15,19 +15,19 @@ static std::vector<std::unique_ptr<Triangle>> split_triangle(const Point& a, con
 {
     const auto d = b*(chi*psi)+a*(chi); // closer to a
     std::vector<std::unique_ptr<Triangle>> result;
-    result.push_back(std::make_unique<WideTriangle>(d, a, c));
-    result.push_back(std::make_unique<MiddleTriangle>(c, d, b));
+    result.push_back(std::make_unique<WideTriangle>(d, c, a));
+    result.push_back(std::make_unique<MiddleTriangle>(c, b, d));
     return result;
 }
 
-std::vector<std::unique_ptr<Triangle>> ScaleneTriangle::split(const float scale) const
+std::vector<std::unique_ptr<Triangle>> ReverseTriangle::split(const float scale) const
 {
     return split_triangle(m_a, m_b, m_c);
 }
 
-std::string ScaleneTriangle::label() const
+std::string ReverseTriangle::label() const
 {
-    return "scaleneHeptagonal";
+    return "reverseHeptagonal";
 }
 
 } // end heptagonal namespace
