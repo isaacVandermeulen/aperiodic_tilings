@@ -17,11 +17,11 @@ HeptagonalTiling::HeptagonalTiling()
 
 void HeptagonalTiling::print_tikz_styles(std::ostream& os) const
 {
-    os << "    \\tikzset{wideHeptagonal/.style={triangle=orange!80!black}}" << std::endl;
-    os << "    \\tikzset{middleHeptagonal/.style={triangle=orange}}" << std::endl;
-    os << "    \\tikzset{tallHeptagonal/.style={triangle=orange!60!white}}" << std::endl;
-    os << "    \\tikzset{reverseHeptagonal/.style={triangle=orange!80!white}}" << std::endl;
-    os << "    \\tikzset{scaleneHeptagonal/.style={triangle=orange!30!white}}" << std::endl;
+    os << "    \\tikzset{wideHeptagonal/.style={triangle=olive!90!black}}" << std::endl;
+    os << "    \\tikzset{middleHeptagonal/.style={triangle=olive!70!white}}" << std::endl;
+    os << "    \\tikzset{tallHeptagonal/.style={triangle=olive!30!white}}" << std::endl;
+    os << "    \\tikzset{reverseHeptagonal/.style={triangle=olive!50!white}}" << std::endl;
+    os << "    \\tikzset{scaleneHeptagonal/.style={triangle=olive!15!white}}" << std::endl;
 }
 
 size_t HeptagonalTiling::symmetry_number() const
