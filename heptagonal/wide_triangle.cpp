@@ -17,8 +17,7 @@ static std::vector<std::unique_ptr<Triangle>> split_triangle(const Point& a, con
     const auto d = c*(chi*psi)+b*(chi); // closer to b
     const auto e = b*(chi*psi)+c*(chi); // closer to c
     std::vector<std::unique_ptr<Triangle>> result;
-    result.push_back(std::make_unique<TallTriangle>(a, e, d));
-    result.push_back(std::make_unique<ReverseTriangle>(b, a, d));
+    result.push_back(std::make_unique<TallTriangle>(b, e, a));
     result.push_back(std::make_unique<ScaleneTriangle>(c, a, e));
     return result;
 }
