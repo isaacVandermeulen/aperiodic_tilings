@@ -35,3 +35,26 @@ std::ostream& Triangle::print_seahorse(std::ostream& os) const
 {
     return os;
 }
+
+std::ostream& Triangle::print_rhombus(std::ostream& os) const
+{
+    if (m_area > 0) {
+        const Point d = m_b + m_c + m_a*-1;
+        os << "\\draw[" << label() << "]" << m_a << "--" << m_b << "--" << d << "--" << m_c << "--cycle;" << std::endl;
+    }
+    return os;
+}
+
+std::ostream& Triangle::print_kite(std::ostream& os) const
+{
+    if (m_area > 0) {
+        Point delta_b = m_b + m_a*-1;
+        Point delta_c = m_c + m_a*-1;
+        const float dot = delta_b.x*delta_c.x + delta_b.y*delta_c.y;
+        const float norm = delta_b.x*delta_b.x + delta_b.y*delta_b.y;
+        Point projection = m_a + (delta_b)*dot*(1/norm);
+        Point e = projection*2 + m_c*-1;
+        os << "\\draw[" << label() << "]" << m_a << "--" << m_c << "--" << m_b << "--" << e << "--cycle;" << std::endl;
+    }
+    return os;
+}

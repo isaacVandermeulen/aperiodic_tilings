@@ -72,6 +72,8 @@ void Tiling::print_latex_file(const std::string& filename) const
     file << "\\begin{scope}[rotate around={" << 360.0/symmetry_number() << "*\\x:((0,0))}]" << std::endl;
     for (const auto& triangle : m_triangles) {
         file << *triangle;
+        //triangle->print_rhombus(file);
+        //triangle->print_kite(file);
     }
     file << "\\end{scope}" << std::endl;
     file << "}" << std::endl;
