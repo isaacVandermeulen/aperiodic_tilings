@@ -2,6 +2,7 @@
 
 #include "constants.hpp"
 #include "tall_triangle.hpp"
+#include "wide_triangle.hpp"
 
 #include <cmath>
 #include <fstream>
@@ -12,6 +13,8 @@ PentagonalTiling::PentagonalTiling()
 {
     m_triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(36*M_PI/180), phi*sin(36*M_PI/180))));
     m_triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(0,0), Point(phi, 0), Point(phi*cos(-36*M_PI/180), phi*sin(-36*M_PI/180))));
+    m_triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(phi*cos(36*M_PI/180), phi*sin(36*M_PI/180)), Point(phi+(1/phi)*cos(36*M_PI/180),(1/phi)*sin(36*M_PI/180)), Point(phi, 0)));
+    m_triangles.push_back(std::make_unique<pentagonal::TallTriangle>(Point(phi*cos(-36*M_PI/180), phi*sin(-36*M_PI/180)), Point(phi+(1/phi)*cos(-36*M_PI/180),(1/phi)*sin(-36*M_PI/180)), Point(phi, 0)));
 }
 
 void PentagonalTiling::print_tikz_styles(std::ostream& os) const
